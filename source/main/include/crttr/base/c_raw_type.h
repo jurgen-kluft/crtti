@@ -7,7 +7,7 @@
 
 namespace ncore
 {
-    namespace RTTR
+    namespace nrtti
     {
         namespace impl
         {
@@ -45,7 +45,7 @@ namespace ncore
                 typedef typename raw_type<T>::type type;
             };
         }  // end namespace impl
-    }  // end namespace RTTR
+    }  // end namespace nrtti
 }  // namespace ncore
 
 #endif  // __RTTR_RAWTYPE_H__

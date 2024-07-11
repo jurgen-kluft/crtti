@@ -6,22 +6,22 @@
 
 namespace ncore
 {
-    namespace RTTR
+    namespace nrtti
     {
-        struct TypeInfoData
+        struct type_info_data_t
         {
-            TypeInfoData()
+            type_info_data_t()
                 : globalIDCounter(0)
             {
             }
 
-            static TypeInfoData &instance()
+            static type_info_data_t &instance()
             {
-                static TypeInfoData obj;
+                static type_info_data_t obj;
                 return obj;
             }
 
-            uint64_t hash(const char *name) const
+            uint64_t hash_name(const char *name) const
             {
                 // FNv-1a hash
                 uint64_t hash = 14695981039346656037ULL;
@@ -33,7 +33,7 @@ namespace ncore
                 return hash;
             }
 
-            bool findTypeId(const char *name, TypeInfo::TypeId &typeId) const
+            bool find_type_id(const char *name, type_info_t::type_id_t &typeId) const
             {
                 // hash the name, then search the hash array through the remap array
                 // using binary search since the remap array is sorted by hash value.
@@ -43,14 +43,14 @@ namespace ncore
 
             static s8 sort_type_info(void const *inItemA, void const *inItemB, void *inUserData)
             {
-                TypeInfoData *self = (TypeInfoData *)inUserData;
+                type_info_data_t *self = (type_info_data_t *)inUserData;
                 s32 const    *a    = (s32 const *)inItemA;
                 s32 const    *b    = (s32 const *)inItemB;
 
                 return 0;
             }
 
-            void sortTypeIdList()
+            void sort_type_id_list()
             {
                 if (lastIDCounter == globalIDCounter)
                     return;
@@ -62,18 +62,18 @@ namespace ncore
                 lastIDCounter = globalIDCounter;
             }
 
-            TypeInfo::TypeId insertTypeId(const char *name, const TypeInfo &rawTypeInfo, const TypeInfo *baseClassList, int numBaseClasses)
+            type_info_t::type_id_t insert_type_id(const char *name, const type_info_t &rawTypeInfo, const type_info_t *baseClassList, int numBaseClasses)
             {
                 if (globalIDCounter >= RTTR_MAX_TYPE_COUNT)
                 {
                     return 0;
                 }
 
-                TypeInfo::TypeId newTypeId   = ++globalIDCounter;
+                type_info_t::type_id_t newTypeId   = ++globalIDCounter;
                 remap[newTypeId]             = newTypeId;
                 nameList[newTypeId]          = name;
-                hashList[newTypeId]          = hash(name);
-                const TypeInfo::TypeId rawId = ((rawTypeInfo.getId() == 0) ? newTypeId : rawTypeInfo.getId());
+                hashList[newTypeId]          = hash_name(name);
+                const type_info_t::type_id_t rawId = ((rawTypeInfo.getId() == 0) ? newTypeId : rawTypeInfo.getId());
                 rawTypeList[newTypeId]       = rawId;
                 const int row                = RTTR_MAX_INHERIT_TYPES_COUNT * rawId;
                 int       index              = 0;
@@ -93,44 +93,44 @@ namespace ncore
             uint64_t    hashList[RTTR_MAX_TYPE_COUNT];
             const char *nameList[RTTR_MAX_TYPE_COUNT];
 
-            TypeInfo::TypeId inheritList[RTTR_MAX_TYPE_COUNT * RTTR_MAX_INHERIT_TYPES_COUNT];
-            TypeInfo::TypeId rawTypeList[RTTR_MAX_TYPE_COUNT];
+            type_info_t::type_id_t inheritList[RTTR_MAX_TYPE_COUNT * RTTR_MAX_INHERIT_TYPES_COUNT];
+            type_info_t::type_id_t rawTypeList[RTTR_MAX_TYPE_COUNT];
         };
 
         /////////////////////////////////////////////////////////////////////////////////////////
 
-        const char *TypeInfo::getName() const
+        const char *type_info_t::getName() const
         {
             if (!isValid())
-                return "Invalid TypeInfo";
-            TypeInfoData &data = TypeInfoData::instance();
+                return "Invalid type_info_t";
+            type_info_data_t &data = type_info_data_t::instance();
             return data.nameList[m_id];
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
 
-        TypeInfo TypeInfo::getRawType() const
+        type_info_t type_info_t::getRawType() const
         {
             if (!isValid())
-                return TypeInfo();
-            TypeInfoData &data = TypeInfoData::instance();
-            return TypeInfo(data.rawTypeList[m_id]);
+                return type_info_t();
+            type_info_data_t &data = type_info_data_t::instance();
+            return type_info_t(data.rawTypeList[m_id]);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
 
-        bool TypeInfo::isTypeDerivedFrom(const TypeInfo &other) const
+        bool type_info_t::isTypeDerivedFrom(const type_info_t &other) const
         {
-            TypeInfoData          &data       = TypeInfoData::instance();
-            const TypeInfo::TypeId thisRawId  = data.rawTypeList[m_id];
-            const TypeInfo::TypeId otherRawId = data.rawTypeList[other.m_id];
+            type_info_data_t          &data       = type_info_data_t::instance();
+            const type_info_t::type_id_t thisRawId  = data.rawTypeList[m_id];
+            const type_info_t::type_id_t otherRawId = data.rawTypeList[other.m_id];
             if (thisRawId == otherRawId)
                 return true;
 
             const int row = RTTR_MAX_INHERIT_TYPES_COUNT * thisRawId;
             for (int i = 0; i < RTTR_MAX_INHERIT_TYPES_COUNT; ++i)
             {
-                const TypeInfo::TypeId currId = data.inheritList[row + i];
+                const type_info_t::type_id_t currId = data.inheritList[row + i];
                 if (currId == otherRawId)
                     return true;
                 if (currId == 0)  // invalid id
@@ -145,17 +145,17 @@ namespace ncore
 
         namespace impl
         {
-            TypeInfo registerOrGetType(const char *name, const TypeInfo &rawTypeInfo, const TypeInfo *baseClassList, int numBaseClasses)
+            type_info_t registerOrGetType(const char *name, const type_info_t &rawTypeInfo, const type_info_t *baseClassList, int numBaseClasses)
             {
-                TypeInfoData &data = TypeInfoData::instance();
+                type_info_data_t &data = type_info_data_t::instance();
                 {
-                    TypeInfo::TypeId typeId;
-                    if (data.findTypeId(name, typeId))
-                        return TypeInfo(typeId);
+                    type_info_t::type_id_t typeId;
+                    if (data.find_type_id(name, typeId))
+                        return type_info_t(typeId);
                 }
 
-                TypeInfo::TypeId newTypeId = data.insertTypeId(name, rawTypeInfo, baseClassList, numBaseClasses);
-                return TypeInfo(newTypeId);
+                type_info_t::type_id_t newTypeId = data.insert_type_id(name, rawTypeInfo, baseClassList, numBaseClasses);
+                return type_info_t(newTypeId);
             }
         }  // end namespace impl
     }  // end namespace RTTR

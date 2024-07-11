@@ -10,7 +10,7 @@
 
 namespace ncore
 {
-    namespace RTTR
+    namespace nrtti
     {
 
 #if RTTR_COMPILER == RTTR_COMPILER_MSVC
@@ -40,7 +40,7 @@ namespace ncore
             };
         }  // end namespace impl
 
-    }  // end namespace RTTR
+    }  // end namespace nrtti
 }  // namespace ncore
 
 #endif  // __RTTR_TYPETRAITS_H__

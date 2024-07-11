@@ -1,7 +1,7 @@
 #ifndef __CRTTR_BASE_C_CORE_PREREQUISITES_H__
 #define __CRTTR_BASE_C_CORE_PREREQUISITES_H__
 
-namespace RTTR
+namespace nrtti
 {
 
 #define RTTR_PLATFORM_WINDOWS 1
@@ -146,6 +146,6 @@ namespace RTTR
 #    pragma warning(disable : 4100)
 #endif
 
-}  // end namespace RTTR
+}  // end namespace nrtti
 
 #endif  // __RTTR_COREPREREQUISITES_H__

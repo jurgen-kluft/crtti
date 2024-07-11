@@ -7,7 +7,7 @@
 
 namespace ncore
 {
-    namespace RTTR
+    namespace nrtti
     {
         namespace impl
         {
@@ -19,12 +19,12 @@ namespace ncore
             };  // only true is defined
 
         }  // end namespace impl
-    }  // end namespace RTTR
+    }  // end namespace nrtti
 }  // namespace ncore
 
 #define RTTR_STATIC_ASSERT(x, msg)                            \
     {                                                         \
-        ncore::RTTR::impl::CompileTimeError<(x)> ERROR_##msg; \
+        ncore::nrtti::impl::CompileTimeError<(x)> ERROR_##msg; \
         (void)ERROR_##msg;                                    \
     }
 

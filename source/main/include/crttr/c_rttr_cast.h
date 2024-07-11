@@ -1,5 +1,9 @@
 #ifndef __CRTTR_C_RTTR_CAST_H__
 #define __CRTTR_C_RTTR_CAST_H__
+#include "ccore/c_target.h"
+#ifdef USE_PRAGMA_ONCE
+#    pragma once
+#endif
 
 /*!
  * \brief Casts the given \a object to type \a T.

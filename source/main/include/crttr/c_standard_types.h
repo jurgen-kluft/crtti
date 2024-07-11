@@ -1,5 +1,9 @@
 #ifndef __CRTTR_C_STANDARD_TYPES_H__
 #define __CRTTR_C_STANDARD_TYPES_H__
+#include "ccore/c_target.h"
+#ifdef USE_PRAGMA_ONCE
+#    pragma once
+#endif
 
 #include "crttr/c_type_info.h"
 #include "crttr/c_rttr_enable.h"

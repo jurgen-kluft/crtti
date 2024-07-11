@@ -8,7 +8,7 @@
 #include "crttr/c_rttr.h"
 #include "cunittest/cunittest.h"
 
-using namespace RTTR;
+using namespace ncore::RTTR;
 
 typedef std::vector<int>           VectorList;
 typedef std::map<int, std::string> IntToStringMap;
@@ -38,7 +38,7 @@ UNITTEST_SUITE_BEGIN(cmsg)
 
         UNITTEST_TEST(TypeIdTests_BasicType)
         {
-            using namespace RTTR;
+            using namespace ncore::RTTR;
             // check normal atomic types
             {
                 int            intVar      = 23;

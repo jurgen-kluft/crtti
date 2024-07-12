@@ -33,7 +33,7 @@ namespace ncore
                 return hash;
             }
 
-            bool find_type_id(const char *name, type_info_t::type_id_t &typeId) const
+            bool find_type_id(const char *name, type_id_t &typeId) const
             {
                 // hash the name, then search the hash array through the remap array
                 // using binary search since the remap array is sorted by hash value.
@@ -62,18 +62,18 @@ namespace ncore
                 lastIDCounter = globalIDCounter;
             }
 
-            type_info_t::type_id_t insert_type_id(const char *name, const type_info_t &rawTypeInfo, const type_info_t *baseClassList, int numBaseClasses)
+            type_id_t insert_type_id(const char *name, const type_info_t &rawTypeInfo, const type_info_t *baseClassList, int numBaseClasses)
             {
                 if (globalIDCounter >= RTTR_MAX_TYPE_COUNT)
                 {
                     return 0;
                 }
 
-                type_info_t::type_id_t newTypeId   = ++globalIDCounter;
+                type_id_t newTypeId   = ++globalIDCounter;
                 remap[newTypeId]             = newTypeId;
                 nameList[newTypeId]          = name;
                 hashList[newTypeId]          = hash_name(name);
-                const type_info_t::type_id_t rawId = ((rawTypeInfo.getId() == 0) ? newTypeId : rawTypeInfo.getId());
+                const type_id_t rawId = ((rawTypeInfo.getId() == 0) ? newTypeId : rawTypeInfo.getId());
                 rawTypeList[newTypeId]       = rawId;
                 const int row                = RTTR_MAX_INHERIT_TYPES_COUNT * rawId;
                 int       index              = 0;
@@ -93,8 +93,8 @@ namespace ncore
             uint64_t    hashList[RTTR_MAX_TYPE_COUNT];
             const char *nameList[RTTR_MAX_TYPE_COUNT];
 
-            type_info_t::type_id_t inheritList[RTTR_MAX_TYPE_COUNT * RTTR_MAX_INHERIT_TYPES_COUNT];
-            type_info_t::type_id_t rawTypeList[RTTR_MAX_TYPE_COUNT];
+            type_id_t inheritList[RTTR_MAX_TYPE_COUNT * RTTR_MAX_INHERIT_TYPES_COUNT];
+            type_id_t rawTypeList[RTTR_MAX_TYPE_COUNT];
         };
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -122,15 +122,15 @@ namespace ncore
         bool type_info_t::isTypeDerivedFrom(const type_info_t &other) const
         {
             type_info_data_t          &data       = type_info_data_t::instance();
-            const type_info_t::type_id_t thisRawId  = data.rawTypeList[m_id];
-            const type_info_t::type_id_t otherRawId = data.rawTypeList[other.m_id];
+            const type_id_t thisRawId  = data.rawTypeList[m_id];
+            const type_id_t otherRawId = data.rawTypeList[other.m_id];
             if (thisRawId == otherRawId)
                 return true;
 
             const int row = RTTR_MAX_INHERIT_TYPES_COUNT * thisRawId;
             for (int i = 0; i < RTTR_MAX_INHERIT_TYPES_COUNT; ++i)
             {
-                const type_info_t::type_id_t currId = data.inheritList[row + i];
+                const type_id_t currId = data.inheritList[row + i];
                 if (currId == otherRawId)
                     return true;
                 if (currId == 0)  // invalid id
@@ -149,12 +149,12 @@ namespace ncore
             {
                 type_info_data_t &data = type_info_data_t::instance();
                 {
-                    type_info_t::type_id_t typeId;
+                    type_id_t typeId;
                     if (data.find_type_id(name, typeId))
                         return type_info_t(typeId);
                 }
 
-                type_info_t::type_id_t newTypeId = data.insert_type_id(name, rawTypeInfo, baseClassList, numBaseClasses);
+                type_id_t newTypeId = data.insert_type_id(name, rawTypeInfo, baseClassList, numBaseClasses);
                 return type_info_t(newTypeId);
             }
         }  // end namespace impl

@@ -9,7 +9,7 @@ namespace ncore
         {
         }
 
-        RTTR_INLINE type_info_t::type_info_t(type_info_t::type_id_t id)
+        RTTR_INLINE type_info_t::type_info_t(type_id_t id)
             : m_id(id)
         {
         }
@@ -31,7 +31,7 @@ namespace ncore
         RTTR_INLINE bool type_info_t::operator<=(const type_info_t &other) const { return (m_id <= other.m_id); }
         RTTR_INLINE bool type_info_t::operator==(const type_info_t &other) const { return (m_id == other.m_id); }
         RTTR_INLINE bool type_info_t::operator!=(const type_info_t &other) const { return (m_id != other.m_id); }
-        RTTR_INLINE type_info_t::type_id_t type_info_t::getId() const { return m_id; }
+        RTTR_INLINE type_id_t type_info_t::getId() const { return m_id; }
         RTTR_INLINE bool                type_info_t::isValid() const { return (m_id != 0); }
 
         namespace impl
@@ -138,7 +138,7 @@ namespace ncore
         template <typename T>
         RTTR_INLINE type_id_t type_info_t::get_id()
         {
-            type_info_t info = get();
+            type_info_t info = get<T>();
             return info.getId();
         }
 

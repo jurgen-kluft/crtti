@@ -12,6 +12,7 @@ namespace ncore
 {
     namespace nrtti
     {
+        typedef u16 type_id_t;
         class type_info_t;
 
         namespace impl
@@ -89,8 +90,6 @@ namespace ncore
         class RTTR_API type_info_t
         {
         public:
-            typedef u16 type_id_t;
-
             /*!
              * Constructs an empty and invalid type_info_t object.
              */

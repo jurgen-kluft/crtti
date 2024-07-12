@@ -1,6 +1,6 @@
-#include "crttr/c_type_info.h"
-#include "crttr/base/c_type_traits.h"
-#include "crttr/base/c_static_assert.h"
+#include "crtti/c_type_info.h"
+#include "crtti/base/c_type_traits.h"
+#include "crtti/base/c_static_assert.h"
 
 template <typename T, typename Arg>
 RTTR_INLINE T rttr_cast(Arg object)

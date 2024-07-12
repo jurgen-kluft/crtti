@@ -5,8 +5,8 @@
 #    pragma once
 #endif
 
-#include "crttr/base/c_type_traits.h"
-#include "crttr/base/c_static_assert.h"
+#include "crtti/base/c_type_traits.h"
+#include "crtti/base/c_static_assert.h"
 
 namespace ncore
 {

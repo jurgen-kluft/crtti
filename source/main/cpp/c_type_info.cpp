@@ -1,5 +1,5 @@
 #include "ccore/c_debug.h"
-#include "crttr/c_type_info.h"
+#include "crtti/c_type_info.h"
 
 #define RTTR_MAX_TYPE_COUNT          32767
 #define RTTR_MAX_INHERIT_TYPES_COUNT 32

@@ -1,7 +1,7 @@
 #ifndef __RTTR_TESTCLASSES_H__
 #define __RTTR_TESTCLASSES_H__
 
-#include "crttr/c_rttr.h"
+#include "crtti/c_rttr.h"
 
 #define CLASS(CLASS_NAME) struct CLASS_NAME { RTTR_ENABLE() virtual int getType() { return 0; } int dummyIntValue; }; \
     RTTR_DECLARE_STANDARD_META_TYPE_VARIANTS(CLASS_NAME)

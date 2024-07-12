@@ -1,4 +1,4 @@
-package crttr
+package crtti
 
 import (
 	denv "github.com/jurgen-kluft/ccode/denv"
@@ -6,23 +6,23 @@ import (
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
-// GetPackage returns the package object of 'crttr'
+// GetPackage returns the package object of 'crtti'
 func GetPackage() *denv.Package {
 	// Dependencies
 	cunittestpkg := cunittest.GetPackage()
 	ccorepkg := ccore.GetPackage()
 
-	// The main (crttr) package
-	mainpkg := denv.NewPackage("crttr")
+	// The main (crtti) package
+	mainpkg := denv.NewPackage("crtti")
 	mainpkg.AddPackage(cunittestpkg)
 	mainpkg.AddPackage(ccorepkg)
 
-	// 'crttr' library
-	mainlib := denv.SetupDefaultCppLibProject("crttr", "github.com\\jurgen-kluft\\crttr")
+	// 'crtti' library
+	mainlib := denv.SetupDefaultCppLibProject("crtti", "github.com\\jurgen-kluft\\crtti")
 	mainlib.Dependencies = append(mainlib.Dependencies, ccorepkg.GetMainLib())
 
-	// 'crttr' unittest project
-	maintest := denv.SetupDefaultCppTestProject("crttr"+"_test", "github.com\\jurgen-kluft\\crttr")
+	// 'crtti' unittest project
+	maintest := denv.SetupDefaultCppTestProject("crtti"+"_test", "github.com\\jurgen-kluft\\crtti")
 	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, ccorepkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)

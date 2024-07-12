@@ -16,6 +16,6 @@
 template<typename T, typename Arg>
 T rttr_cast(Arg object);
 
-#include "crttr/impl/c_rttr_cast_impl.h"
+#include "crtti/impl/c_rttr_cast_impl.h"
 
 #endif // __RTTR_RTTRCAST_H__

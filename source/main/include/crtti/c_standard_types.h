@@ -5,8 +5,8 @@
 #    pragma once
 #endif
 
-#include "crttr/c_type_info.h"
-#include "crttr/c_rttr_enable.h"
+#include "crtti/c_type_info.h"
+#include "crtti/c_rttr_enable.h"
 
 RTTR_DECLARE_STANDARD_META_TYPE_VARIANTS(bool)
 RTTR_DECLARE_STANDARD_META_TYPE_VARIANTS(int)

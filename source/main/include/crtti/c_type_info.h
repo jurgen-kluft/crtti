@@ -5,8 +5,8 @@
 #    pragma once
 #endif
 
-#include "crttr/base/c_core_prerequisites.h"
-#include "crttr/base/c_type_traits.h"
+#include "crtti/base/c_core_prerequisites.h"
+#include "crtti/base/c_type_traits.h"
 
 namespace ncore
 {
@@ -196,22 +196,12 @@ namespace ncore
              */
             type_info_t getRawType() const;
 
-            /*!
-             * \brief Returns a type_info_t object for the given template type \a T.
-             *
-             * \return type_info_t for the template type \a T.
-             */
             template <typename T>
             static type_info_t get();
 
-            /*!
-             * \brief Returns a type_info_t object for the given instance \a object.
-             *
-             * \remark If the type of the expression is a cv-qualified type, the result of the type_info_t::get expression refers to a
-             *         type_info_t object representing the cv-unqualified type.
-             *
-             * \return type_info_t for an \a object of type \a T.
-             */
+            template <typename T>
+            static type_id_t get_id();
+
             template <typename T>
             static type_info_t get(T *object);
 
@@ -309,6 +299,6 @@ namespace ncore
     }  // end namespace nrtti
 }  // namespace ncore
 
-#include "crttr/impl/c_type_info_impl.h"
+#include "crtti/impl/c_type_info_impl.h"
 
 #endif  // __RTTR_TYPEINFO_H__

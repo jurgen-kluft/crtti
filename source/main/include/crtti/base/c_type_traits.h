@@ -5,7 +5,7 @@
 #    pragma once
 #endif
 
-#include "crttr/base/c_raw_type.h"
+#include "crtti/base/c_raw_type.h"
 #include <type_traits>
 
 namespace ncore

@@ -1,4 +1,4 @@
-#include "crttr/base/c_static_assert.h"
+#include "crtti/base/c_static_assert.h"
 
 namespace ncore
 {
@@ -133,6 +133,13 @@ namespace ncore
         RTTR_INLINE type_info_t type_info_t::get()
         {
             return impl::metatype_info_t<typename Traits::remove_cv<typename Traits::remove_reference<T>::type>::type>::getTypeInfo();
+        }
+
+        template <typename T>
+        RTTR_INLINE type_id_t type_info_t::get_id()
+        {
+            type_info_t info = get();
+            return info.getId();
         }
 
         template <typename T>

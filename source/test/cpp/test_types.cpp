@@ -5,10 +5,10 @@
 #include <string>
 #include <iostream>
 
-#include "crttr/c_rttr.h"
+#include "crtti/c_rttr.h"
 #include "cunittest/cunittest.h"
 
-using namespace ncore::RTTR;
+using namespace ncore::nrtti;
 
 typedef std::vector<int>           VectorList;
 typedef std::map<int, std::string> IntToStringMap;
@@ -29,7 +29,7 @@ RTTR_DEFINE_STANDARD_META_TYPE_VARIANTS(IntToIntMap)
 RTTR_DECLARE_META_TYPE(int***)
 RTTR_DEFINE_META_TYPE(int***)
 
-UNITTEST_SUITE_BEGIN(cmsg)
+UNITTEST_SUITE_BEGIN(crtti)
 {
     UNITTEST_FIXTURE(url)
     {
@@ -38,38 +38,38 @@ UNITTEST_SUITE_BEGIN(cmsg)
 
         UNITTEST_TEST(TypeIdTests_BasicType)
         {
-            using namespace ncore::RTTR;
+            using namespace ncore::nrtti;
             // check normal atomic types
             {
-                int            intVar      = 23;
-                const TypeInfo intTypeInfo = TypeInfo::get(intVar);
+                int               intVar      = 23;
+                const type_info_t intTypeInfo = type_info_t::get(intVar);
                 CHECK_EQUAL(intTypeInfo.getName(), "int");
-                CHECK_TRUE(intTypeInfo == TypeInfo::get<int>());
+                CHECK_TRUE(intTypeInfo == type_info_t::get<int>());
 
-                bool           boolVar      = true;
-                const TypeInfo boolTypeInfo = TypeInfo::get(boolVar);
+                bool              boolVar      = true;
+                const type_info_t boolTypeInfo = type_info_t::get(boolVar);
                 CHECK_EQUAL(boolTypeInfo.getName(), "bool");
-                CHECK_TRUE(boolTypeInfo == TypeInfo::get<bool>());
+                CHECK_TRUE(boolTypeInfo == type_info_t::get<bool>());
 
                 CHECK_TRUE(boolTypeInfo != intTypeInfo);
 
                 int*** intPtr = NULL;
-                CHECK_TRUE(TypeInfo::get<int***>() == TypeInfo::get(intPtr));
+                CHECK_TRUE(type_info_t::get<int***>() == type_info_t::get(intPtr));
             }
 
             // check pointer types
             {
-                int            intVar         = 23;
-                int*           intPtrVar      = &intVar;
-                const TypeInfo intPtrTypeInfo = TypeInfo::get(intPtrVar);
-                CHECK_EQUAL(intPtrTypeInfo.getName(), "int*");
-                CHECK_TRUE(intPtrTypeInfo == TypeInfo::get<int*>());
+                int               intVar         = 23;
+                int*              intPtrVar      = &intVar;
+                const type_info_t intPtrTypeInfo = type_info_t::get(intPtrVar);
+                CHECK_EQUAL(intPtrTypeInfo.getName(), "int *");
+                CHECK_TRUE(intPtrTypeInfo == type_info_t::get<int*>());
 
-                bool           boolVar         = true;
-                bool*          boolPtrVar      = &boolVar;
-                const TypeInfo boolPtrTypeInfo = TypeInfo::get(boolPtrVar);
-                CHECK_EQUAL(boolPtrTypeInfo.getName(), "bool*");
-                CHECK_TRUE(boolPtrTypeInfo == TypeInfo::get<bool*>());
+                bool              boolVar         = true;
+                bool*             boolPtrVar      = &boolVar;
+                const type_info_t boolPtrTypeInfo = type_info_t::get(boolPtrVar);
+                CHECK_EQUAL(boolPtrTypeInfo.getName(), "bool *");
+                CHECK_TRUE(boolPtrTypeInfo == type_info_t::get<bool*>());
 
                 CHECK_TRUE(boolPtrTypeInfo != intPtrTypeInfo);
             }
@@ -78,20 +78,20 @@ UNITTEST_SUITE_BEGIN(cmsg)
             {
                 int       intVar      = 42;
                 const int constIntVar = 42;
-                CHECK_TRUE(TypeInfo::get(intVar) == TypeInfo::get(constIntVar));
-                CHECK_TRUE(TypeInfo::get<int>() == TypeInfo::get(constIntVar));
-                CHECK_TRUE(TypeInfo::get<int>() == TypeInfo::get<const int>());
-                CHECK_TRUE(TypeInfo::get<int>() == TypeInfo::get<const int&>());
+                CHECK_TRUE(type_info_t::get(intVar) == type_info_t::get(constIntVar));
+                CHECK_TRUE(type_info_t::get<int>() == type_info_t::get(constIntVar));
+                CHECK_TRUE(type_info_t::get<int>() == type_info_t::get<const int>());
+                CHECK_TRUE(type_info_t::get<int>() == type_info_t::get<const int&>());
 
-                CHECK_TRUE(TypeInfo::get<int*>() == TypeInfo::get(&intVar));
-                CHECK_TRUE(TypeInfo::get<int*>() == TypeInfo::get<int* const>());
-                CHECK_TRUE(TypeInfo::get<const int*>() == TypeInfo::get(&constIntVar));
-                CHECK_TRUE(TypeInfo::get<const int*>() == TypeInfo::get<const int* const>());
+                CHECK_TRUE(type_info_t::get<int*>() == type_info_t::get(&intVar));
+                CHECK_TRUE(type_info_t::get<int*>() == type_info_t::get<int* const>());
+                CHECK_TRUE(type_info_t::get<const int*>() == type_info_t::get(&constIntVar));
+                CHECK_TRUE(type_info_t::get<const int*>() == type_info_t::get<const int* const>());
 
                 const int& intConstRef = intVar;
-                CHECK_TRUE(TypeInfo::get<int>() == TypeInfo::get(intConstRef));
+                CHECK_TRUE(type_info_t::get<int>() == type_info_t::get(intConstRef));
                 int*** ptr = NULL;
-                CHECK_TRUE(TypeInfo::get<int***>() == TypeInfo::get(ptr));
+                CHECK_TRUE(type_info_t::get<int***>() == type_info_t::get(ptr));
             }
         }
 
@@ -99,20 +99,20 @@ UNITTEST_SUITE_BEGIN(cmsg)
         {
             VectorList       myList;
             std::vector<int> myList2;
-            CHECK_TRUE(TypeInfo::get<std::vector<int> >() == TypeInfo::get<VectorList>());
-            CHECK_TRUE(TypeInfo::get<std::vector<int> >() == TypeInfo::get(myList));
-            CHECK_TRUE(TypeInfo::get<VectorList>() == TypeInfo::get(myList));
-            CHECK_TRUE(TypeInfo::get(myList) == TypeInfo::get(myList2));
+            CHECK_TRUE(type_info_t::get<std::vector<int> >() == type_info_t::get<VectorList>());
+            CHECK_TRUE(type_info_t::get<std::vector<int> >() == type_info_t::get(myList));
+            CHECK_TRUE(type_info_t::get<VectorList>() == type_info_t::get(myList));
+            CHECK_TRUE(type_info_t::get(myList) == type_info_t::get(myList2));
 
             IntToStringMap             myMap;
             std::map<int, std::string> myMap2;
 
-            CHECK_TRUE((TypeInfo::get<std::map<int, std::string> >() == TypeInfo::get<IntToStringMap>()));
-            CHECK_TRUE((TypeInfo::get<std::map<int, std::string> >() == TypeInfo::get(myMap)));
-            CHECK_TRUE((TypeInfo::get<IntToStringMap>() == TypeInfo::get(myMap)));
-            CHECK_TRUE((TypeInfo::get(myMap) == TypeInfo::get(myMap2)));
+            CHECK_TRUE((type_info_t::get<std::map<int, std::string> >() == type_info_t::get<IntToStringMap>()));
+            CHECK_TRUE((type_info_t::get<std::map<int, std::string> >() == type_info_t::get(myMap)));
+            CHECK_TRUE((type_info_t::get<IntToStringMap>() == type_info_t::get(myMap)));
+            CHECK_TRUE((type_info_t::get(myMap) == type_info_t::get(myMap2)));
 
-            CHECK_TRUE((TypeInfo::get(myMap) != TypeInfo::get<std::map<int, int> >()));
+            CHECK_TRUE((type_info_t::get(myMap) != type_info_t::get<std::map<int, int> >()));
         }
 
         UNITTEST_TEST(TypeIdTests_SingleClassInheritance)
@@ -152,12 +152,12 @@ UNITTEST_SUITE_BEGIN(cmsg)
         UNITTEST_TEST(TypeIdTests_MultipleClassInheritance)
         {
             {
-                FinalClass          final;
-                ClassMultipleBaseA& baseMultiA = final;
-                ClassMultipleBaseB& baseMultiB = final;
-                ClassMultipleBaseC& baseMultiC = final;
-                ClassMultipleBaseD& baseMultiD = final;
-                ClassMultipleBaseE& baseMultiE = final;
+                FinalClass          _final;
+                ClassMultipleBaseA& baseMultiA = _final;
+                ClassMultipleBaseB& baseMultiB = _final;
+                ClassMultipleBaseC& baseMultiC = _final;
+                ClassMultipleBaseD& baseMultiD = _final;
+                ClassMultipleBaseE& baseMultiE = _final;
 
                 // down cast cast
                 CHECK_TRUE(rttr_cast<FinalClass*>(&baseMultiA) != NULL);
@@ -167,11 +167,11 @@ UNITTEST_SUITE_BEGIN(cmsg)
                 CHECK_TRUE(rttr_cast<FinalClass*>(&baseMultiE) != NULL);
 
                 // up cast cast
-                CHECK_TRUE(rttr_cast<ClassMultipleBaseA*>(&final) != NULL);
-                CHECK_TRUE(rttr_cast<ClassMultipleBaseB*>(&final) != NULL);
-                CHECK_TRUE(rttr_cast<ClassMultipleBaseC*>(&final) != NULL);
-                CHECK_TRUE(rttr_cast<ClassMultipleBaseD*>(&final) != NULL);
-                CHECK_TRUE(rttr_cast<ClassMultipleBaseE*>(&final) != NULL);
+                CHECK_TRUE(rttr_cast<ClassMultipleBaseA*>(&_final) != NULL);
+                CHECK_TRUE(rttr_cast<ClassMultipleBaseB*>(&_final) != NULL);
+                CHECK_TRUE(rttr_cast<ClassMultipleBaseC*>(&_final) != NULL);
+                CHECK_TRUE(rttr_cast<ClassMultipleBaseD*>(&_final) != NULL);
+                CHECK_TRUE(rttr_cast<ClassMultipleBaseE*>(&_final) != NULL);
 
                 // down cast cast to the middle
                 CHECK_TRUE(rttr_cast<ClassMultiple3A*>(&baseMultiA) != NULL);
@@ -212,12 +212,12 @@ UNITTEST_SUITE_BEGIN(cmsg)
             ClassSingle6A    instance6A;
             ClassSingleBase& baseSingle = instance6A;
 
-            CHECK_TRUE(TypeInfo::get<ClassSingle6A>() == TypeInfo::get(baseSingle));
-            CHECK_TRUE(TypeInfo::get<ClassSingleBase*>() == TypeInfo::get(&baseSingle));
+            CHECK_TRUE(type_info_t::get<ClassSingle6A>() == type_info_t::get(baseSingle));
+            CHECK_TRUE(type_info_t::get<ClassSingleBase*>() == type_info_t::get(&baseSingle));
 
             ClassSingle3A instance3A;
-            CHECK_TRUE(TypeInfo::get<ClassSingle3A>() == TypeInfo::get(instance3A));
-            CHECK_TRUE(TypeInfo::get<ClassSingle6A>() != TypeInfo::get(instance3A));
+            CHECK_TRUE(type_info_t::get<ClassSingle3A>() == type_info_t::get(instance3A));
+            CHECK_TRUE(type_info_t::get<ClassSingle6A>() != type_info_t::get(instance3A));
         }
     }
 }

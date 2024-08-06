@@ -25,14 +25,14 @@ namespace ncore
             return *this;
         }
 
-        RTTR_INLINE bool type_info_t::operator<(const type_info_t &other) const { return (m_id < other.m_id); }
-        RTTR_INLINE bool type_info_t::operator>(const type_info_t &other) const { return (m_id > other.m_id); }
-        RTTR_INLINE bool type_info_t::operator>=(const type_info_t &other) const { return (m_id >= other.m_id); }
-        RTTR_INLINE bool type_info_t::operator<=(const type_info_t &other) const { return (m_id <= other.m_id); }
-        RTTR_INLINE bool type_info_t::operator==(const type_info_t &other) const { return (m_id == other.m_id); }
-        RTTR_INLINE bool type_info_t::operator!=(const type_info_t &other) const { return (m_id != other.m_id); }
+        RTTR_INLINE bool      type_info_t::operator<(const type_info_t &other) const { return (m_id < other.m_id); }
+        RTTR_INLINE bool      type_info_t::operator>(const type_info_t &other) const { return (m_id > other.m_id); }
+        RTTR_INLINE bool      type_info_t::operator>=(const type_info_t &other) const { return (m_id >= other.m_id); }
+        RTTR_INLINE bool      type_info_t::operator<=(const type_info_t &other) const { return (m_id <= other.m_id); }
+        RTTR_INLINE bool      type_info_t::operator==(const type_info_t &other) const { return (m_id == other.m_id); }
+        RTTR_INLINE bool      type_info_t::operator!=(const type_info_t &other) const { return (m_id != other.m_id); }
         RTTR_INLINE type_id_t type_info_t::getId() const { return m_id; }
-        RTTR_INLINE bool                type_info_t::isValid() const { return (m_id != 0); }
+        RTTR_INLINE bool      type_info_t::isValid() const { return (m_id != 0); }
 
         namespace impl
         {
@@ -194,21 +194,21 @@ namespace ncore
         }                                                                                                             \
     }
 
-#define RTTR_DEFINE_META_TYPE(T)                                              \
-    namespace ncore                                                           \
-    {                                                                         \
-        namespace nrtti                                                       \
-        {                                                                     \
-            namespace impl                                                    \
-            {                                                                 \
-                template <>                                                   \
+#define RTTR_DEFINE_META_TYPE(T)                                                  \
+    namespace ncore                                                               \
+    {                                                                             \
+        namespace nrtti                                                           \
+        {                                                                         \
+            namespace impl                                                        \
+            {                                                                     \
+                template <>                                                       \
                 struct auto_register_type_t<T>                                    \
-                {                                                             \
+                {                                                                 \
                     auto_register_type_t() { metatype_info_t<T>::getTypeInfo(); } \
-                };                                                            \
-            }                                                                 \
-        }                                                                     \
-    }                                                                         \
+                };                                                                \
+            }                                                                     \
+        }                                                                         \
+    }                                                                             \
     static const ncore::nrtti::impl::auto_register_type_t<T> RTTR_CAT(autoRegisterType, __COUNTER__);
 
 #define RTTR_DECLARE_STANDARD_META_TYPE_VARIANTS(T) \
